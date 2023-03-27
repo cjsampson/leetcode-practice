@@ -19,31 +19,29 @@ func maxSubArray1(nums []int) int {
 	return findMaxSubArray(nums, 0, len(nums)-1)
 }
 
-// nums := []int{5, 1, -3, 4, -6, 2, 1, -5, 4}
 func findMaxSubArray(nums []int, left, right int) int {
 	if left == right {
 		return nums[left]
 	}
+
 	mid := (left + right) / 2
+
+	//return max(findMaxSubArray(nums, left, mid), maxCrossing(nums, left, right, mid), findMaxSubArray(nums, mid+1, right))
 	leftMax := findMaxSubArray(nums, left, mid)
 	rightMax := findMaxSubArray(nums, mid+1, right)
 	crossMax := maxCrossing(nums, left, right, mid)
 	return max(leftMax, rightMax, crossMax)
 }
 
-// nums := []int{5, 1, -3, 4, -6, 2, 1, -5, 4}
 func maxCrossing(nums []int, left, right, mid int) int {
-	leftSum := -1 << 31
-	rightSum := -1 << 31
-	sum := 0
+	leftSum, rightSum, sum := -1<<31, -1<<31, 0
 
 	for i := mid; i >= left; i-- {
 		sum += nums[i]
 		leftSum = max(leftSum, sum)
 	}
-
 	sum = 0
-	for i := mid + 1; i <= right; i++ {
+	for i := mid + 1; i < right; i++ {
 		sum += nums[i]
 		rightSum = max(rightSum, sum)
 	}
@@ -52,13 +50,13 @@ func maxCrossing(nums []int, left, right, mid int) int {
 }
 
 func max(values ...int) int {
-	maxVal := values[0]
-	for i := 1; i < len(values); i++ {
-		if values[i] > maxVal {
-			maxVal = values[i]
+	var maxval int
+	for i := 0; i < len(values); i++ {
+		if values[i] > maxval {
+			maxval = values[i]
 		}
 	}
-	return maxVal
+	return maxval
 }
 
 func maxSubArray(nums []int) int {

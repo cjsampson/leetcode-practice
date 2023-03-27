@@ -78,4 +78,24 @@ func (t *Tree) Delete(v int) error {
 	if !present {
 		return errors.New("Element not present int the tree")
 	}
+	return tree.Replace(v)
+}
+
+func (t *Tree) Replace(v int) error {
+	if t.Right == nil && t.Left == nil {
+		t.Parent = nil
+		return nil
+	}
+
+	switch {
+	case t.Right == nil:
+		t.Parent.Left = t.Left
+	case t.Left == nil:
+		t.Parent.Right = t.Right
+	default:
+		min := t.Right.Minimum()
+		t.Value = min
+		t.Right.Delete(min)
+	}
+	return nil
 }
